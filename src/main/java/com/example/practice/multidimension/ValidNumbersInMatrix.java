@@ -78,13 +78,43 @@ public class ValidNumbersInMatrix {
         return true;
     }
 
+    public static boolean checkValidBest(int[][] matrix) {
+        int len = matrix.length;
+        boolean b[] = new boolean[len];
+        for(int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                if (matrix[i][j] < 1 || matrix[i][j] > len) return false;
+                b[matrix[i][j]-1] = true;
+            }
+            for(int k = 0; k < len; k++) {
+                if(!b[k]) return false;
+                b[k] = false;
+            }
+        }
+
+        for(int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                if (matrix[j][i] < 1 || matrix[j][i] > len) return false;
+                b[matrix[j][i]-1] = true;
+            }
+            for(int k = 0; k < len; k++) {
+                if(!b[k]) return false;
+                b[k] = false;
+            }
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) {
         int [][] matrix = {{1,1,1},{1,2,3},{1,2,3}};
         Assert.isTrue(!checkValid(matrix), "Invalid Matrix");
         Assert.isTrue(!checkValid2(matrix), "Invalid Matrix");
+        Assert.isTrue(!checkValidBest(matrix), "Invalid Matrix");
 
         matrix = new int[][]{{1, 2, 3}, {3, 1, 2}, {2, 3, 1}};
         Assert.isTrue(checkValid(matrix), "Valid Matrix");
         Assert.isTrue(checkValid2(matrix), "Valid Matrix");
+        Assert.isTrue(checkValidBest(matrix), "Valid Matrix");
     }
 }
